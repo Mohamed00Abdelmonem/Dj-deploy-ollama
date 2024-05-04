@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama3 Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Markdown CSS (Optional, if you want to style Markdown output) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+    <style>
+        /* Custom styles for the page */
+        body {
+            background-color: rgb(11, 36, 42); 
+            color: #c6d4d9; /* Dark text color */
+            position: relative; /* Make body a relative position */
+            min-height: 100vh; /* Set min-height to cover the viewport */
+            font-family: 'Lugrasimo', cursive; /* Set Lugrasimo as font */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 50px; /* Add padding at the bottom for footer */
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            padding: 20px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Add shadow at the top */
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .footer .form-group {
+            margin-bottom: 0; /* Remove margin bottom for form group */
+            flex: 1;
+        }
+
+        .footer textarea {
+            resize: none; /* Disable textarea resize */
+            height: 100px; /* Set height of textarea */
+        }
+
+        .footer button[type="submit"] {
+            background-color: #17a2b8; /* Button background color */
+            border-color: #17a2b8; /* Button border color */
+            margin-left: 10px; /* Add margin to separate button from textarea */
+        }
+
+        .generated-text {
+            border: 1px solid #ced4da; /* Light border color */
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #fff; /* White background */
+            color: #212529; /* Dark text color */
+            font-family: 'Lugrasimo', cursive; /* Set Lugrasimo as font */
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none; /* Initially hide the spinner */
+            border: 8px solid rgba(255, 255, 255, 0.3); /* Semi-transparent border */
+            border-top: 8px solid #ffffff; /* White top border */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite; /* Rotate animation */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the spinner */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lugrasimo&display=swap" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            // Show the spinner when the DOM content is loaded
+            document.querySelector('.spinner').style.display = 'block';
+        });
+        window.addEventListener("load", function(event) {
+            // Hide the spinner when the window is fully loaded
+            document.querySelector('.spinner').style.display = 'none';
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        
+        <h1 class="mt-5">Ollama3 Text Generator</h1>
+
+        {% if generated_text %}
+        <div class="generated-text mt-5 markdown-body">
+            <h2>Result Text:</h2>
+            <pre><code>{{ generated_text | safe }}</code></pre>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <form method="post" class="d-flex">
+                {% csrf_token %}
+                <div class="form-group flex-grow-1">
+                    <label for="input_text" class="d-none">Input Text:</label>
+                    <textarea class="form-control" id="input_text" name="input_text" rows="4" placeholder="Enter your text here..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Text</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading spinner -->
+    <div class="spinner"></div>
+
+    <!-- Bootstrap JS (Optional, if you need Bootstrap components) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
